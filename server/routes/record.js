@@ -1,19 +1,17 @@
-const express = require("express");
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController.js');
  
-// recordRoutes is an instance of the express router.
-// We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /record.
-const recordRoutes = express.Router();
+router.post('/signup', userController.signup);
  
-// This will help us connect to the database
-const dbo = require("../db/conn");
+router.post('/login', userController.login);
  
-// This help convert the id from string to ObjectId for the _id.
-const ObjectId = require("mongodb").ObjectId;
+router.get('/user/:userId', userController.allowIfLoggedin, userController.getUser);
  
-
-recordRoutes.get('/', (req, res) => {
-  res.send('THIS WORKS!'); 
-})
+router.get('/users', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'), userController.getUsers);
  
-module.exports = recordRoutes;
+router.put('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'profile'), userController.updateUser);
+ 
+router.delete('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'profile'), userController.deleteUser);
+ 
+module.exports = router;

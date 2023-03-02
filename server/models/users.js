@@ -1,26 +1,26 @@
-import mongoose from 'mongoose'; 
-
-const userSchema = mongoose.Schema({
-    name: { 
-        type: String, 
-        required: true 
-    }, 
-    email: { 
-        type: String, 
-        required: true 
-    }, 
-    password: { 
-        type: String, 
-        required: true 
-    }, 
-    id: { 
-        type: String 
-    }, 
-    role: { 
-        type: String , 
-        enum: ["student", "tutor", "admin"]
-    }, 
-    
-})
-
-export default mongoose.model("User", userSchema); 
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+ 
+const UserSchema = new Schema({
+ email: {
+  type: String,
+  required: true,
+  trim: true
+ },
+ password: {
+  type: String,
+  required: true
+ },
+ role: {
+  type: String,
+  default: 'basic',
+  enum: ["student", "tutor", "admin"]
+ },
+ accessToken: {
+  type: String
+ }
+});
+ 
+const User = mongoose.model('user', UserSchema);
+ 
+module.exports = User;
