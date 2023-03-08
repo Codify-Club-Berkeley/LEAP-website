@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import BottomBar from './BottomBar';
-import './App.css';
 
 class App extends React.Component {
   constructor(props) {
