@@ -1,30 +1,100 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require("cors");
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const path = require('path')
 const User = require('./models/users')
 const routes = require('./routes/record.js');
- 
+const dbConfig = require("./config/dbConfig.js");
 
- 
-require("dotenv").config({
- path: path.join(__dirname, "../env")
-});
+require('dotenv').config()
  
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
  
 const PORT = process.env.PORT || 4000;
- 
-mongoose
- .connect('mongodb://localhost/server')
- .then(() => {
-  console.log('Connected to the Database successfully');
- });
+
+var corsOptions = {
+  origin: "http://localhost:4000"
+};
+
+app.use(cors(corsOptions));
+
+app.use(express.json());
  
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const db = require("./models");
+const Role = db.role;
+
+// routes
+require('./routes/authRoutes')(app);
+require('./routes/userRoutes')(app);
+
+const URI = process.env.MONGO_URI; 
+console.log("hihihih" + URI); 
+db.mongoose
+  .connect("mongodb+srv://michelle:LWukDpV2Dc9oxVYW@leap.lucy7xm.mongodb.net/?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Successfully connect to MongoDB.");
+    initial();
+  })
+  .catch(err => {
+    console.error("Connection error", err);
+    process.exit();
+  });
+
+function initial() {
+    Role.estimatedDocumentCount((err, count) => {
+      if (!err && count === 0) {
+        new Role({
+          name: "student"
+        }).save(err => {
+          if (err) {
+            console.log("error", err);
+          }
+  
+          console.log("added 'student' to roles collection");
+        });
+  
+        new Role({
+          name: "tutor"
+        }).save(err => {
+          if (err) {
+            console.log("error", err);
+          }
+  
+          console.log("added 'tutor' to roles collection");
+        });
+  
+        new Role({
+          name: "admin"
+        }).save(err => {
+          if (err) {
+            console.log("error", err);
+          }
+  
+          console.log("added 'admin' to roles collection");
+        });
+      }
+    });
+  }
+
+
+/*mongoose
+ .connect(process.env.MONGO_URI)
+ .then(() => {
+  console.log('Connected to the Database successfully');
+ })
+ .catch(err => {
+  console.error("Connection error", err);
+  process.exit();
+});
  
 app.use(async (req, res, next) => {
  if (req.headers["x-access-token"]) {
@@ -67,7 +137,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('push', msg);
   });
 });
- 
+ */ 
 app.use('/', routes); app.listen(PORT, () => {
   console.log('Server is listening on Port:', PORT)
 })
