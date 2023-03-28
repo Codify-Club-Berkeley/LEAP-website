@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Register from "./register-component";
 
 import UserService from "../services/user-service";
 
@@ -22,7 +23,7 @@ export default class Home extends Component {
         this.setState({
           content:
             (error.response && error.response.data) ||
-            error.message ||
+            error.message ||  
             error.toString()
         });
       }

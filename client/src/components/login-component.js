@@ -1,25 +1,15 @@
 import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 
+import SimpleReactValidator from 'simple-react-validator';
 import AuthService from "../services/auth-service";
 
 import { withRouter } from "../common/with-router.js";
 
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.validator = new SimpleReactValidator({autoForceUpdate: this});
     this.handleLogin = this.handleLogin.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
@@ -52,9 +42,7 @@ class Login extends Component {
       loading: true
     });
 
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
+    if (this.validator.allValid()) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
           this.props.router.navigate("/profile");
@@ -78,77 +66,51 @@ class Login extends Component {
       this.setState({
         loading: false
       });
+      this.validator.showMessages();
+      this.forceUpdate();
     }
   }
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+      <div className="container">
+        <img
+            src="../assets/logo.png"
             alt="profile-img"
             className="profile-img-card"
           />
+      <h1>Log In</h1>
+      <div className="form-group">
+        <label>Username *</label>
+        <input className="form-control" value={this.state.username} onChange={this.onChangeUsername} />
 
-          <Form
-            onSubmit={this.handleLogin}
-            ref={c => {
-              this.form = c;
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
-              />
-            </div>
+        {/**********   This is where the magic happens     ***********/}
+        {this.validator.message('username', this.state.username, 'required|min:3|max:20', { className: 'text-danger' })}
 
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
+      </div>
+      <div className="form-group">
+        <label>Password *</label>
+        <input className="form-control" value={this.state.password} onChange={this.onChangePassword} />
 
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Login</span>
-              </button>
-            </div>
-
-            {this.state.message && (
+        {/**********   This is where the magic happens     ***********/}
+        {this.validator.message('password', this.state.password, 'required|min:6|max:40', { className: 'text-danger' })}
+      </div>
+      <button className="btn btn-primary" onClick={this.handleLogin}>Login</button>
+      {this.state.message && (
               <div className="form-group">
-                <div className="alert alert-danger" role="alert">
+                <div
+                  className={
+                    this.state.successful
+                      ? "alert alert-success"
+                      : "alert alert-danger"
+                  }
+                  role="alert"
+                >
                   {this.state.message}
                 </div>
               </div>
             )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
-        </div>
-      </div>
+    </div>
     );
   }
 }

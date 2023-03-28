@@ -17,7 +17,7 @@ const io = require('socket.io')(http);
 const PORT = process.env.PORT || 4000;
 
 var corsOptions = {
-  origin: "http://localhost:4000"
+  origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -138,6 +138,7 @@ io.on('connection', (socket) => {
   });
 });
  */ 
+
 app.use('/', routes); app.listen(PORT, () => {
   console.log('Server is listening on Port:', PORT)
 })

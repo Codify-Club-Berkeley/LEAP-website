@@ -7,6 +7,7 @@ db.mongoose = mongoose;
 
 db.user = require("./users");
 db.role = require("./role-model");
+db.refreshToken = require("./refreshToken-model");
 
 db.ROLES = ["student", "tutor", "admin"];
 

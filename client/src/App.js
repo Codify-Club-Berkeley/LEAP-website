@@ -1,22 +1,4 @@
-/*import './styles/App.css';
-import 'boxicons/css/boxicons.min.css';
-import React from 'react';
-import SideNavBar from './SideNavBar';
-
-
-
-class App extends React.Component {
-    render () { 
-        return (
-        <>
-            <SideNavBar></SideNavBar>
-        </>
-    ); 
-    }; 
-}
-
-export default App; */ 
-import React, { Component } from "react";
+import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -31,13 +13,13 @@ import BoardStudent from "./components/board-student-component";
 import BoardTutor from "./components/board-tutor-component";
 import BoardAdmin from "./components/board-admin-component";
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      showModeratorBoard: false,
+      showTutorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     };
@@ -49,7 +31,7 @@ class App extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showTutorBoard: user.roles.includes("ROLE_TUTOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
@@ -58,20 +40,21 @@ class App extends Component {
   logOut() {
     AuthService.logout();
     this.setState({
-      showModeratorBoard: false,
+      showTutorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     });
   }
 
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showTutorBoard, showAdminBoard } = this.state;
 
     return (
       <div>
+        
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
-            bezKoder
+            Leap
           </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
@@ -80,10 +63,10 @@ class App extends Component {
               </Link>
             </li>
 
-            {showModeratorBoard && (
+            {showTutorBoard && (
               <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
+                <Link to={"/tutor"} className="nav-link">
+                  Tutor Board
                 </Link>
               </li>
             )}
@@ -134,19 +117,25 @@ class App extends Component {
             </div>
           )}
         </nav>
-
         <div className="container mt-3">
+          
           <Routes>
+            
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
+            
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardStudent />} />
             <Route path="/mod" element={<BoardTutor />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            
           </Routes>
+          
         </div>
+          
       </div>
     );
   }
