@@ -6,12 +6,14 @@ import "./App.css";
 import AuthService from "./services/auth-service";
 
 import Login from "./components/login-component";
-import Register from "./components/register-component";
+import Register from "./components/register/register-component";
 import Home from "./components/home-component";
 import Profile from "./components/profile-component";
 import BoardStudent from "./components/board-student-component";
 import BoardTutor from "./components/board-tutor-component";
 import BoardAdmin from "./components/board-admin-component";
+import TutorApplication from "./components/register/tutor-apply";
+import Messaging from "./pages/Messaging";
 
 class App extends React.Component {
   constructor(props) {
@@ -51,7 +53,6 @@ class App extends React.Component {
 
     return (
       <div>
-        
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
             Leap
@@ -104,14 +105,18 @@ class App extends React.Component {
           ) : (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
-                  Login
+                <Link to={"/apply"} className="nav-link">
+                  Students
                 </Link>
               </li>
-
               <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
+                <Link to={"/login"} className="nav-link">
+                  Tutors
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to={"/login"} className="nav-link">
+                  Admin
                 </Link>
               </li>
             </div>
@@ -123,10 +128,10 @@ class App extends React.Component {
             
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            
+            <Route path="/messaging" element={<Messaging />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            
+            <Route path="/apply" element={<TutorApplication />}></Route>
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardStudent />} />
             <Route path="/mod" element={<BoardTutor />} />

@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import BottomBar from '../BottomMessageBar';
+import BottomBar from '../components/BottomMessageBar';
 
 class Messaging extends React.Component {
   constructor(props) {

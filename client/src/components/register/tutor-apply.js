@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import SimpleReactValidator from 'simple-react-validator';
-import AuthService from "../services/auth-service";
+import AuthService from "../../services/auth-service";
+import Select from 'react-dropdown-select';
 
-export default class Register extends Component {
+export default class TutorApplication extends Component {
   constructor(props) {
     super(props);
     this.validator = new SimpleReactValidator({autoForceUpdate: this});
@@ -16,9 +17,12 @@ export default class Register extends Component {
       email: "",
       password: "",
       successful: false,
-      message: ""
+      message: "", 
+      subjects: [] 
     };
+    
   }
+  options = [{value: 1, label: "AP Biology"}, {value: 2, label: "AP Chemistry"}, {value: 3, label: "AP Physics 1"}, {value: 3, label: "AP Physics 2"}]
 
   onChangeUsername(e) {
     this.setState({
@@ -109,6 +113,10 @@ export default class Register extends Component {
 
         {/**********   This is where the magic happens     ***********/}
         {this.validator.message('password', this.state.password, 'required|min:6|max:40', { className: 'text-danger' })}
+      </div>
+      <div className="form-group">
+        <label>Subjects You Can Tutor *</label>
+        <Select multi={true} options={this.options} onChange={(values) => this.setState({subjects: values})}></Select>
       </div>
       <button className="btn btn-primary" onClick={this.submitForm}>Sign Up</button>
       {this.state.message && (

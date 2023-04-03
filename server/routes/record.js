@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController.js');
 
@@ -14,4 +14,4 @@ router.put('/user/:userId', userController.allowIfLoggedin, userController.grant
  
 router.delete('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'profile'), userController.deleteUser);
  
-module.exports = router;
+module.exports = router;*/ 

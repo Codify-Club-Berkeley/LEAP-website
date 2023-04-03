@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Register from "./register-component";
+import Register from "./register/register-component";
 
 import UserService from "../services/user-service";
 

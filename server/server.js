@@ -5,16 +5,27 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const path = require('path')
 const User = require('./models/users')
-const routes = require('./routes/record.js');
+//const routes = require('./routes/record.js');
 const dbConfig = require("./config/dbConfig.js");
 
 require('dotenv').config()
  
 const app = express();
 const http = require('http').Server(app);
+
+
+const PORT = process.env.PORT || 4000; 
+
 const io = require('socket.io')(http);
+//app.use('/', routes); 
+
+/*const io = require('socket.io')(server, {
+  pingTimeout: 60000, 
+  cors: {
+    origin: "http://localhost:3000"
+  }
+})*/ 
  
-const PORT = process.env.PORT || 4000;
 
 var corsOptions = {
   origin: "http://localhost:3000"
@@ -32,9 +43,9 @@ const Role = db.role;
 // routes
 require('./routes/authRoutes')(app);
 require('./routes/userRoutes')(app);
+require('./routes/messagingRoutes')(app); 
 
-const URI = process.env.MONGO_URI; 
-console.log("hihihih" + URI); 
+const URI = process.env.MONGO_URI;  
 db.mongoose
   .connect("mongodb+srv://michelle:LWukDpV2Dc9oxVYW@leap.lucy7xm.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -108,12 +119,12 @@ app.use(async (req, res, next) => {
  } else { 
     next(); 
  } 
-});
+}); */ 
 
 io.on('connection', (socket) => {
-
+  console.log("connected to socket.io"); 
   // Get the last 10 messages from the database.
-  Message.find().sort({createdAt: -1}).limit(10).exec((err, messages) => {
+  /*Message.find().sort({createdAt: -1}).limit(10).exec((err, messages) => {
     if (err) return console.error(err);
 
     // Send the last messages to the user.
@@ -134,11 +145,10 @@ io.on('connection', (socket) => {
     });
 
     // Notify all other users about a new message.
-    socket.broadcast.emit('push', msg);
-  });
+    socket.broadcast.emit('push', msg); 
+  }); */ 
 });
- */ 
-
-app.use('/', routes); app.listen(PORT, () => {
+ 
+const server = app.listen(PORT, () => {
   console.log('Server is listening on Port:', PORT)
 })

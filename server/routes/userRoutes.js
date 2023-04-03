@@ -25,4 +25,12 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+  //app.get('/user/:userId', controller.allowIfLoggedin, controller.getUser);
+ 
+  app.get('/users', [authJwt.verifyToken], controller.getUsers);
+ 
+  //app.put('/user/:userId', controller.allowIfLoggedin, controller.grantAccess('updateAny', 'profile'), controller.updateUser);
+ 
+  //app.delete('/user/:userId', controller.allowIfLoggedin, controller.grantAccess('deleteAny', 'profile'), controller.deleteUser);
+ 
 };

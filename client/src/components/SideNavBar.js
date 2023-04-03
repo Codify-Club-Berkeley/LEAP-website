@@ -1,48 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './styles/sidebar.css';
-import logo from './assets/logo.png';
-import Messaging from './pages/Messaging';
+import '../styles/sidebar.css';
+import logo from '../assets/logo.png';
+import Messaging from '../pages/Messaging';
 
-const sidebarNavItems = [
-    {
-        display: 'Dashboard',
-        icon: <i className='bx bx-home'></i>,
-        to: '/',
-        section: ''
-    },
-    {
-        display: 'Students',
-        icon: <i className='bx bx-group'></i>,
-        to: '/students',
-        section: 'students'
-    },
-    {
-        display: 'Calendar',
-        icon: <i className='bx bx-calendar'></i>,
-        to: '/calendar',
-        section: 'calendar'
-    },
-    {
-        display: 'Messages',
-        icon: <i className='bx bx-message-alt-detail'></i>,
-        to: '/messaging',
-        section: 'messaging'
-    },
-    {
-        display: 'Settings',
-        icon: <i className='bx bx-cog'></i>,
-        to: '/settings',
-        section: 'settings'
-    },
-]
-
-const Sidebar = () => {
+const SideNavBar = (props) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [stepHeight, setStepHeight] = useState(0);
     const sidebarRef = useRef();
     const indicatorRef = useRef();
     const location = useLocation();
+    const sidebarNavItems = props; 
 
     useEffect(() => {
         setTimeout(() => {
@@ -55,9 +23,9 @@ const Sidebar = () => {
     // change active index
     useEffect(() => {
         const curPath = window.location.pathname.split('/')[1];
-        const activeItem = sidebarNavItems.findIndex(item => item.section === curPath);
+        const activeItem = sidebarNavItems.props.findIndex(item => item.section === curPath);
         setActiveIndex(curPath.length === 0 ? 0 : activeItem);
-    }, [location]);
+    }, [location, sidebarNavItems.props]);
 
     return <div className='sidebar'>
         <div className="sidebar__logo">
@@ -72,7 +40,7 @@ const Sidebar = () => {
                 }}
             ></div>
             {
-                sidebarNavItems.map((item, index) => (
+                sidebarNavItems.props.map((item, index) => (
                     <Link to={item.to} key={index}>
                         <div className={`sidebar__menu__item ${activeIndex === index ? 'active' : ''}`}>
                             <div className="sidebar__menu__item__icon">
@@ -89,4 +57,4 @@ const Sidebar = () => {
     </div>;
 };
 
-export default Sidebar;
+export default SideNavBar;

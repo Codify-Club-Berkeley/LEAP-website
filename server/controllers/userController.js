@@ -29,7 +29,7 @@ exports.signup = async (req, res, next) => {
  }
 }
 exports.login = async (req, res, next) => {
-    try {
+  try {
      const { email, password } = req.body;
      const user = await User.findOne({ email });
      if (!user) return next(new Error('Email does not exist'));
@@ -40,13 +40,13 @@ exports.login = async (req, res, next) => {
      });
      await User.findByIdAndUpdate(user._id, { accessToken })
      res.status(200).json({
-      data: { email: user.email, role: user.role },
+      data: { email: user.email, role: user.roles },
       accessToken
      })
-    } catch (error) {
+  } catch (error) {
      next(error);
     }
-   }
+}
    exports.getUsers = async (req, res, next) => {
     const users = await User.find({});
     res.status(200).json({
