@@ -9,7 +9,7 @@ dotenv.config();
  * @returns {Promise<void>}
  */
 const mongoConnect = async () =>{
-  await mongoose.connect(2,{ useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect("mongodb+srv://michelle:LWukDpV2Dc9oxVYW@leap.lucy7xm.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true, useUnifiedTopology: true });
 }
 
 export default mongoConnect;
