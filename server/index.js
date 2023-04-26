@@ -52,6 +52,8 @@ io.on('connection', (socket) => {
       name: msg.name,
     });
 
+   // console.log(msg.content)
+
     // Save the message to the database.
     message.save((err) => {
       if (err) return console.error(err);
@@ -61,6 +63,15 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('push', msg);
   });
 });
+/*
+const findResult = await orders.find({
+  name: "Lemony Snicket",
+  date: {
+    $gte: new Date(new Date().setHours(00, 00, 00)),
+    $lt: new Date(new Date().setHours(23, 59, 59)),
+  },
+});
+*/
 
 http.listen(port, () => {
   console.log('listening on *:' + port);
